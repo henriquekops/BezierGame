@@ -10,7 +10,7 @@ from OpenGL.GL import (
 )
 
 __author__ = "Henrique Kops & Gabriel Castro"
-__credits__ = "Marcio Sarroglia Pinho"
+
 
 class Point:
 
