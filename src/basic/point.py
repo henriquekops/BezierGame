@@ -18,7 +18,7 @@ class Point:
     Point class
     """
 
-    def __init__(self, x:int=0, y:int=0) -> None:
+    def __init__(self, x:float=0.0, y:float=0.0) -> None:
         self.x = x
         self.y = y
 

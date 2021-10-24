@@ -6,6 +6,9 @@ import sys
 from os import _exit
 from time import time
 
+# project dependencies
+from src.basic.polygon import Polygon
+
 # external dependencies
 from OpenGL.GL import (
     glClear,
@@ -50,16 +53,18 @@ ESCAPE = b'\x1b'
 # global variables
 past_time = time()
 acc_time, n_frames, total_time = 0, 0, 0
+polygon = Polygon()
 
 
 def display() -> None:
     """
     Draw objects at window
     """
+    global polygon
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    # TODO: draw
+    polygon.draw()
     glutSwapBuffers()
 
 
@@ -145,4 +150,5 @@ if __name__ == '__main__':
     glutSpecialFunc(special)
     glutMouseFunc(mouse)
     glutMotionFunc(motion)
+    polygon.generate("config/test.txt")
     glutMainLoop()

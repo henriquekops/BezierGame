@@ -2,8 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # project dependencies
-from basic.point import Point
-import point
+from src.basic.point import Point
 
 # external dependencies
 from OpenGL.GL import (
@@ -22,7 +21,7 @@ class Line:
     Line class
     """
 
-    def __init__(self, x1:int, y1:int, x2:int, y2:int) -> None:
+    def __init__(self, x1:float, y1:float, x2:float, y2:float) -> None:
         self.p1 = Point(x=x1, y=y1)
         self.p2 = Point(x=x2, y=y2)
 
