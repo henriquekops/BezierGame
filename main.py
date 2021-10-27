@@ -7,7 +7,9 @@ from os import _exit
 from time import time
 
 # project dependencies
+from src.basic.point import Point
 from src.basic.polygon import Polygon
+from src.objects.curve import Curve
 
 # external dependencies
 from OpenGL.GL import (
@@ -54,17 +56,19 @@ ESCAPE = b'\x1b'
 past_time = time()
 acc_time, n_frames, total_time = 0, 0, 0
 polygon = Polygon()
+curve = Curve(Point(20,10), Point(40,50), Point(60,10))
 
 
 def display() -> None:
     """
     Draw objects at window
     """
-    global polygon
+    global polygon, curve
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     polygon.draw()
+    curve.draw()
     glutSwapBuffers()
 
 
