@@ -13,7 +13,8 @@ from OpenGL.GL import (
     glEnd,
     glVertex2f,
     glColor3f,
-    GL_LINE_LOOP
+    GL_LINE_LOOP,
+    GL_LINES
 )
 
 __author__ = "Henrique Kops & Gabriel Castro"
@@ -30,6 +31,18 @@ class Polygon:
         Add vertex to this polygon
         """
         self.vertices.append(Point(x, y))
+
+    def axis(self) -> None: # TODO: Drop later
+        """
+        Draw world axes
+        """
+        glColor3f(1,1,1)
+        glBegin(GL_LINES)
+        glVertex2f(0, 50)
+        glVertex2f(100, 50)
+        glVertex2f(50, 0)
+        glVertex2f(50, 100)
+        glEnd()
 
     def draw(self) -> None:
         """

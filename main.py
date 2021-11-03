@@ -10,6 +10,7 @@ from time import time
 from src.basic.point import Point
 from src.basic.polygon import Polygon
 from src.objects.curve import Curve
+from src.objects.car import Car
 
 # external dependencies
 from OpenGL.GL import (
@@ -56,7 +57,7 @@ ESCAPE = b'\x1b'
 past_time = time()
 acc_time, n_frames, total_time = 0, 0, 0
 polygon = Polygon()
-curve = Curve(Point(20,10), Point(40,50), Point(60,10))
+curve = Curve(Point(0, 35), Point(50,100), Point(100,35))
 
 
 def display() -> None:
@@ -68,6 +69,7 @@ def display() -> None:
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     polygon.draw()
+    polygon.axis()
     curve.draw()
     glutSwapBuffers()
 
@@ -106,7 +108,7 @@ def reshape(w:int, h:int) -> None:
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     glOrtho(0, 100, 0, 100, 0, 1)
-    glViewport(0, 100, w, h)
+    glViewport(0, 0, w, h)
 
 
 def keyboard(*args) -> None:
@@ -145,7 +147,8 @@ if __name__ == '__main__':
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA)
     glutInitWindowPosition(0, 0)
-    glutInitWindowSize(500, 500)
+    glutInitWindowSize(700, 500)
+    glutInitWindowPosition(100, 100)
     window = glutCreateWindow("Bezier Game")
     glutDisplayFunc(display)
     glutIdleFunc(idle)
