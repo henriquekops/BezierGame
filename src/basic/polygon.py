@@ -44,20 +44,6 @@ class Polygon:
             glVertex2f(p[1].x, p[1].y)
         glEnd()
 
-    def limits(self) -> Tuple[Point, Point]:
-        """
-        Get limits of this polygon
-        """
-        min:Point = self.vertices[0]
-        max:Point = self.vertices[0]
-        v:Point
-        for v in self.vertices:
-            if min.x > v.x: min.x = v.x
-            if min.y > v.y: min.y = v.y
-            if max.x < v.x: max.x = v.x
-            if max.y < v.y: max.y = v.y
-        return min, max
-
     def generate(self, f_path) -> None:
         """
         Generates this polygon through text file
