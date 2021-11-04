@@ -22,6 +22,10 @@ class Vector:
     def __repr__(self) -> str:
         return f"x={self.x} y={self.y}"
 
+    def horizontal(self) -> None:
+        self.x = 1.0
+        self.y = 0.0
+
     def dot(self, v: Vector) -> float:
         return ((self.x * v.x) + (self.y * v.y))
 

@@ -2,11 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # built-in dependencies
-from math import (
-    acos,
-    cos,
-    sin
-)
+from math import acos
 
 # project dependencies
 from src.basic.polygon import Polygon
@@ -51,8 +47,7 @@ class Car(Polygon):
         v_dir = Vector(p2, p1)
         v_dir.unitary()
         v_hor = Vector()
-        v_hor.x = 1.0
-        v_hor.y = 0.0
+        v_hor.horizontal()
         rotation = self.__DEGREE * acos(v_dir.dot(v_hor))
         if v_dir.y < 0: rotation = -rotation
         self.rotation = rotation
