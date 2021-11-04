@@ -20,6 +20,7 @@ from OpenGL.GL import (
     glViewport,
     glPushMatrix,
     glTranslatef,
+    glRotatef,
     glPopMatrix,
     GL_PROJECTION,
     GL_COLOR_BUFFER_BIT,
@@ -75,8 +76,11 @@ def display() -> None:
     curve.draw()
 
     car.move(dt)
+    car.direction()
+
     glPushMatrix()
     glTranslatef(car.position.x, car.position.y, 0)
+    glRotatef(car.rotation, 0, 0, 1)
     car.draw()
     glPopMatrix()
 

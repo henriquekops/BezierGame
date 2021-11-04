@@ -64,8 +64,8 @@ class Curve:
 
     def bezier(self, t:float) -> Point:
         mt = 1-t
-        x = pow(mt,2) * self.p0.x + 2 * mt * t * self.p1.x + pow(t, 2) * self.p2.x
-        y = pow(mt,2) * self.p0.y + 2 * mt * t * self.p1.y + pow(t, 2) * self.p2.y
+        x = (pow(mt,2) * self.p0.x) + (2 * mt * t * self.p1.x) + (pow(t, 2) * self.p2.x)
+        y = (pow(mt,2) * self.p0.y) + (2 * mt * t * self.p1.y) + (pow(t, 2) * self.p2.y)
         return Point(x, y)
 
     def __distance(self, p1:Point, p2:Point) -> None:
