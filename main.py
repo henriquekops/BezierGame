@@ -5,6 +5,7 @@
 import sys
 from os import _exit
 from time import time
+import random
 
 # project dependencies
 from src.objects.car import Car
@@ -57,8 +58,10 @@ ESCAPE = b'\x1b'
 
 # global variables
 past_time = time()
+num_enemies = 10
 dt, acc_time, n_frames, total_time = 0, 0, 0, 0
-car = Car()
+mainCar = Car()
+enemies = []
 map = Map()
 
 
@@ -66,7 +69,7 @@ def display() -> None:
     """
     Draw objects at window
     """
-    global car, map
+    global mainCar, map, enemies
 
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
@@ -74,6 +77,14 @@ def display() -> None:
 
     map.draw_curves()
 
+    display_car(mainCar)
+    for e in enemies:
+        display_car(e)
+
+    glutSwapBuffers()
+
+
+def display_car(car: Car) -> None:
     curve_ended = car.move(dt)
 
     if curve_ended:
@@ -86,8 +97,6 @@ def display() -> None:
         glRotatef(car.rotation, 0, 0, 1)
         car.draw()
         glPopMatrix()
-
-    glutSwapBuffers()
 
 
 def idle() -> None:
@@ -175,6 +184,11 @@ if __name__ == '__main__':
     glutMotionFunc(motion)
     map.generate("config/map_control.txt")
     map.render("config/map.txt")
-    car.generate("config/car.txt")
-    car.set_curve(map.curves[0], True)
+    mainCar.generate("config/car.txt")
+    mainCar.set_curve(map.curves[0], True)
+    for i in range(num_enemies):
+        enemy = Car()
+        enemy.generate("config/car.txt")
+        enemy.set_curve(map.curves[random.randint(0, num_enemies)], random.choice([True, False]))
+        enemies.append(enemy)
     glutMainLoop()
