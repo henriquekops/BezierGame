@@ -19,7 +19,6 @@ from OpenGL.GL import (
     glEnd
 )
 
-
 __author__ = "Henrique Kops & Gabriel Castro"
 
 

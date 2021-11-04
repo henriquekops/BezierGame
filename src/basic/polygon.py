@@ -2,7 +2,6 @@
 #-*- coding: utf-8 -*-
 
 # built-in dependencies
-from typing import Tuple
 from itertools import combinations
 
 # project dependencies
