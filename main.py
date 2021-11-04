@@ -8,7 +8,6 @@ from time import time
 
 # project dependencies
 from src.basic.point import Point
-from src.basic.polygon import Polygon
 from src.objects.curve import Curve
 from src.objects.car import Car
 
@@ -19,6 +18,9 @@ from OpenGL.GL import (
     glLoadIdentity,
     glOrtho,
     glViewport,
+    glPushMatrix,
+    glTranslatef,
+    glPopMatrix,
     GL_PROJECTION,
     GL_COLOR_BUFFER_BIT,
     GL_MODELVIEW
@@ -55,22 +57,29 @@ ESCAPE = b'\x1b'
 
 # global variables
 past_time = time()
-acc_time, n_frames, total_time = 0, 0, 0
-polygon = Polygon()
-curve = Curve(Point(0, 35), Point(50,100), Point(100,35))
+dt, acc_time, n_frames, total_time = 0, 0, 0, 0
+car = Car()
+curve = Curve(Point(-20, -10), Point(0, 10), Point(20,-10))
 
 
 def display() -> None:
     """
     Draw objects at window
     """
-    global polygon, curve
+    global car, curve
+
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    polygon.draw()
-    polygon.axis()
+
     curve.draw()
+
+    car.move(dt)
+    glPushMatrix()
+    glTranslatef(car.position.x, car.position.y, 0)
+    car.draw()
+    glPopMatrix()
+
     glutSwapBuffers()
 
 
@@ -78,7 +87,7 @@ def idle() -> None:
     """
     Control program while idle
     """
-    global past_time, acc_time, total_time, n_frames
+    global dt, past_time, acc_time, total_time, n_frames
     now_time = time()
     dt = (now_time - past_time)
     past_time = now_time
@@ -107,7 +116,7 @@ def reshape(w:int, h:int) -> None:
     """
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    glOrtho(0, 100, 0, 100, 0, 1)
+    glOrtho(-20, 20, -20, 20, 0, 1)
     glViewport(0, 0, w, h)
 
 
@@ -157,5 +166,6 @@ if __name__ == '__main__':
     glutSpecialFunc(special)
     glutMouseFunc(mouse)
     glutMotionFunc(motion)
-    polygon.generate("config/test.txt")
+    car.generate("config/car.txt")
+    car.set_curve(curve)
     glutMainLoop()

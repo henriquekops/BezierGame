@@ -22,6 +22,12 @@ class Point:
         self.x = x
         self.y = y
 
+    def __repr__(self) -> str:
+        """
+        String representation of this point
+        """
+        return f"x={self.x} y={self.y}"
+
     def draw(self) -> None:
         """
         Draw this point

@@ -33,7 +33,7 @@ class Curve:
         self.p1 = p1
         self.p2 = p2
 
-    def distance(self) -> float:
+    def length(self) -> float:
         dt = 1.0/50
         t = dt
         length = 0
