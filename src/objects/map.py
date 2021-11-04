@@ -25,15 +25,21 @@ class Map(Polygon):
     def add_curve(self, curve:Curve) -> None:
         self.curves.append(curve)
 
-    def get_next(self, id:int, point:Point) -> Tuple[Curve, bool]:
+    def get_next(self, curve:Curve, forward:bool) -> Tuple[Curve, bool]:
         aux = []
         c:Curve
         for c in self.curves:
-            if c.id != id:
-                if point.id == c.p0.id:
-                    aux.append((c, True))
-                elif point.id == c.p2.id:
-                    aux.append((c, False))
+            if c.id != curve.id:
+                if forward:
+                    if curve.p2.id() == c.p0.id():
+                        aux.append((c, True))
+                    elif curve.p2.id() == c.p2.id():
+                        aux.append((c, False))
+                else:
+                    if curve.p0.id() == c.p0.id():
+                        aux.append((c, True))
+                    elif curve.p0.id() == c.p2.id():
+                        aux.append((c, False))
         return aux[randint(0,len(aux)-1)]
 
     def render(self, f_path) -> None:

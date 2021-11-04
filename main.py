@@ -60,7 +60,6 @@ past_time = time()
 dt, acc_time, n_frames, total_time = 0, 0, 0, 0
 car = Car()
 map = Map()
-# curve = Curve(Point(-20, -10), Point(0, 10), Point(20,-10))
 
 
 def display() -> None:
@@ -78,14 +77,8 @@ def display() -> None:
     curve_ended = car.move(dt)
 
     if curve_ended:
-        if car.forward:
-            new_curve, forward = map.get_next(car.curve.id, car.curve.p2)
-            print(new_curve, forward)
-            car.set_curve(new_curve, forward)
-        else:
-            new_curve, forward = map.get_next(car.curve.id, car.curve.p0)
-            print(new_curve, forward)
-            car.set_curve(new_curve, forward)
+        new_curve, forward = map.get_next(car.curve, car.forward)
+        car.set_curve(new_curve, forward)
     else:
         car.direction()
         glPushMatrix()
@@ -183,6 +176,5 @@ if __name__ == '__main__':
     map.generate("config/map_control.txt")
     map.render("config/map.txt")
     car.generate("config/car.txt")
-    print(map.curves)
     car.set_curve(map.curves[0], True)
     glutMainLoop()

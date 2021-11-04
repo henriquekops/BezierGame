@@ -26,14 +26,18 @@ class Car(Polygon):
         self.position = None
         self.rotation = 0.0
         self.curve = None
-        self.velocity = 20
+        self.velocity = 30
         self.a_t = 0.0
         self.b_t = 0.0
         self.forward = True
 
     def set_curve(self, curve:Curve, forward:bool) -> None:
-        self.a_t = 0.0
-        self.b_t = 0.0
+        if forward:
+            self.a_t = 0.0
+            self.b_t = 0.0
+        else:
+            self.a_t = 1.0
+            self.b_t = 0.0
         self.rotation = 0.0
         self.position = None
         self.curve = curve
@@ -41,13 +45,15 @@ class Car(Polygon):
 
     def move(self, dt:float) -> bool:
         if dt == 0: dt = 0.000000001
-        if self.a_t < 1.0:
+        if (self.forward and self.a_t < 1.0) or (not self.forward and self.a_t > 0.0):
             velocity = self.velocity
-            if not self.forward: velocity = -1 * velocity
             deslocation = velocity * dt
             pos = deslocation/self.curve.length()
             self.b_t = self.a_t
-            self.a_t = self.a_t + pos
+            if self.forward:
+                self.a_t = self.a_t + pos
+            else:
+                self.a_t = self.a_t - pos
             self.position = self.curve.bezier(self.a_t)
             return False
         return True
