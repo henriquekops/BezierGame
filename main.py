@@ -23,6 +23,7 @@ from OpenGL.GL import (
     glViewport,
     glPushMatrix,
     glTranslatef,
+    glClearColor,
     glRotatef,
     glPopMatrix,
     GL_PROJECTION,
@@ -63,38 +64,55 @@ SPACE = b' '
 # global variables
 past_time = time()
 dt, acc_time, n_frames, total_time = 0, 0, 0, 0
-num_enemies = 3
+num_enemies = 5
 mainCar = Car()
 map = Map()
 enemies = []
+dead = False
 
 
 def init() -> None:
     global enemies, mainCar, map
     enemies = []
-    mainCar.set_curve(map.curves[randint(0, len(map.curves))], True)
-    for i in range(num_enemies):
+    mainCar.set_curve(map.curves[randint(0, len(map.curves)-1)], True)
+    for _ in range(num_enemies):
         enemy = Car()
         enemy.generate("config/car.txt")
         enemy.set_curve(map.curves[randint(0, num_enemies)], choice([True, False]))
         enemies.append(enemy)
+
+def check_collision() -> None:
+    global enemies, mainCar, dead
+    e: Car
+    for e in enemies:
+        if mainCar.curve.id == e.curve.id:
+            if abs(mainCar.a_t - e.a_t) < 0.01:
+                dead = True
 
 
 def display() -> None:
     """
     Draw objects at window
     """
-    global mainCar, map, enemies
+    global mainCar, map, enemies, dead
 
-    glClear(GL_COLOR_BUFFER_BIT)
-    glMatrixMode(GL_MODELVIEW)
-    glLoadIdentity()
+    if dead:
+        glClear(GL_COLOR_BUFFER_BIT)
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+        glClearColor(1, 0, 0, 0)
+    else:
+        glClear(GL_COLOR_BUFFER_BIT)
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
 
-    map.draw_curves()
+        map.draw_curves()
 
-    display_car(mainCar, 0.0, 1.0, 0.0)
-    for e in enemies:
-        display_car(e, 1.0, 0.0, 0.0)
+        display_car(mainCar, 0.0, 1.0, 0.0)
+        for e in enemies:
+            display_car(e, 1.0, 0.0, 0.0)
+
+        check_collision()
 
     glutSwapBuffers()
 
