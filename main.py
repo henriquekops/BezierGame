@@ -182,10 +182,11 @@ def special(a_keys, x:int, y:int) -> None:
     """
     Control special key input
     """
-    if a_keys == GLUT_KEY_UP: pass
-    if a_keys == GLUT_KEY_DOWN: pass
-    if a_keys == GLUT_KEY_LEFT: pass
-    if a_keys == GLUT_KEY_RIGHT: pass
+    global mainCar
+    if a_keys == GLUT_KEY_UP: mainCar.velocity = 30
+    if a_keys == GLUT_KEY_DOWN: mainCar.velocity = 0.1
+    if a_keys == GLUT_KEY_LEFT: mainCar.forward = False
+    if a_keys == GLUT_KEY_RIGHT: mainCar.forward = True
 
 
 def mouse(button:int, state:int, x:int, y:int) -> None:
