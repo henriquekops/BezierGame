@@ -5,7 +5,10 @@
 import sys
 from os import _exit
 from time import time
-import random
+from random import (
+    randint,
+    choice
+)
 
 # project dependencies
 from src.objects.car import Car
@@ -55,14 +58,26 @@ __credits__ = "Marcio Sarroglia Pinho"
 
 # constants
 ESCAPE = b'\x1b'
+SPACE = b' '
 
 # global variables
 past_time = time()
-num_enemies = 10
 dt, acc_time, n_frames, total_time = 0, 0, 0, 0
+num_enemies = 3
 mainCar = Car()
-enemies = []
 map = Map()
+enemies = []
+
+
+def init() -> None:
+    global enemies, mainCar, map
+    enemies = []
+    mainCar.set_curve(map.curves[randint(0, len(map.curves))], True)
+    for i in range(num_enemies):
+        enemy = Car()
+        enemy.generate("config/car.txt")
+        enemy.set_curve(map.curves[randint(0, num_enemies)], choice([True, False]))
+        enemies.append(enemy)
 
 
 def display() -> None:
@@ -77,14 +92,14 @@ def display() -> None:
 
     map.draw_curves()
 
-    display_car(mainCar)
+    display_car(mainCar, 0.0, 1.0, 0.0)
     for e in enemies:
-        display_car(e)
+        display_car(e, 1.0, 0.0, 0.0)
 
     glutSwapBuffers()
 
 
-def display_car(car: Car) -> None:
+def display_car(car: Car, r, g, b) -> None:
     curve_ended = car.move(dt)
 
     if curve_ended:
@@ -95,7 +110,7 @@ def display_car(car: Car) -> None:
         glPushMatrix()
         glTranslatef(car.position.x, car.position.y, 0)
         glRotatef(car.rotation, 0, 0, 1)
-        car.draw()
+        car.draw(r, g, b)
         glPopMatrix()
 
 
@@ -141,6 +156,7 @@ def keyboard(*args) -> None:
     Control keyboard input
     """
     if args[0] == ESCAPE: _exit(0)
+    elif args[0] == SPACE: init()
     glutPostRedisplay()
 
 
@@ -185,10 +201,5 @@ if __name__ == '__main__':
     map.generate("config/map_control.txt")
     map.render("config/map.txt")
     mainCar.generate("config/car.txt")
-    mainCar.set_curve(map.curves[0], True)
-    for i in range(num_enemies):
-        enemy = Car()
-        enemy.generate("config/car.txt")
-        enemy.set_curve(map.curves[random.randint(0, num_enemies)], random.choice([True, False]))
-        enemies.append(enemy)
+    init()
     glutMainLoop()

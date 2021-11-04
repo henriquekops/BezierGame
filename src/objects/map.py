@@ -2,7 +2,10 @@
 #-*- coding: utf-8 -*-
 
 # built-in dependencies
-from random import randint
+from random import (
+    randint,
+    random
+)
 from typing import Tuple
 
 # project dependencies
@@ -16,11 +19,17 @@ class Map(Polygon):
     def __init__(self) -> None:
         super().__init__()
         self.curves = []
+        self.first = True
 
     def draw_curves(self) -> None:
         c: Curve
         for c in self.curves:
+            if self.first:
+                c.r = random()
+                c.g = random()
+                c.b = random()
             c.draw()
+        self.first = False
 
     def add_curve(self, curve:Curve) -> None:
         self.curves.append(curve)

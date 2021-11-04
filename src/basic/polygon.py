@@ -33,18 +33,18 @@ class Polygon:
         """
         self.vertices.append(Point(x, y))
 
-    def draw(self) -> None:
+    def draw(self, r:float, g:float, b:float) -> None:
         """
         Draw this polygon
         """
-        glColor3f(1.0, 1.0, 0.0)
+        glColor3f(r, g, b)
         glBegin(GL_LINE_LOOP)
         for p in self.pairs:
             glVertex2f(p[0].x, p[0].y)
             glVertex2f(p[1].x, p[1].y)
         glEnd()
 
-    def get_limits(self) -> Tuple[Point, Point]:
+    def limits(self) -> Tuple[Point, Point]:
         """
         Get limits of this polygon
         """
@@ -70,4 +70,3 @@ class Polygon:
             self.add(x, y)
         f.close()
         self.pairs = list(combinations(self.vertices, 2))
-        # return self.get_limits()

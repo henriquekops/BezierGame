@@ -33,6 +33,9 @@ class Curve:
         self.p1 = p1
         self.p2 = p2
         self.id = id
+        self.r = 0.0
+        self.g = 0.0
+        self.b = 0.0
 
     def __repr__(self) -> str:
         return f"id={self.id} p1=[{self.p0}] p2=[{self.p1}] p3=[{self.p2}]"
@@ -56,7 +59,7 @@ class Curve:
         t = dt
         p1 = self.bezier(0.0)
         glBegin(GL_LINES)
-        glColor3f(1.0, 1.0, 0.0)
+        glColor3f(self.r, self.g, self.b)
         while( t < 1.0):
             p2 = self.bezier(t)
             glVertex2f(p1.x, p1.y)
