@@ -28,10 +28,14 @@ class Curve:
     Curve class
     """
 
-    def __init__(self, p0:Point, p1:Point, p2:Point) -> None:
+    def __init__(self, p0:Point, p1:Point, p2:Point, id:int) -> None:
         self.p0 = p0
         self.p1 = p1
         self.p2 = p2
+        self.id = id
+
+    def __repr__(self) -> str:
+        return f"id={self.id} p1=[{self.p0}] p2=[{self.p1}] p3=[{self.p2}]"
 
     def length(self) -> float:
         dt = 1.0/50

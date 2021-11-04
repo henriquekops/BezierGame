@@ -28,6 +28,12 @@ class Point:
         """
         return f"x={self.x} y={self.y}"
 
+    def id(self) -> str:
+        """
+        Unique identifier of this point
+        """
+        return f"{self.x}{self.y}"
+
     def draw(self) -> None:
         """
         Draw this point

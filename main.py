@@ -7,9 +7,8 @@ from os import _exit
 from time import time
 
 # project dependencies
-from src.basic.point import Point
-from src.objects.curve import Curve
 from src.objects.car import Car
+from src.objects.map import Map
 
 # external dependencies
 from OpenGL.GL import (
@@ -60,29 +59,40 @@ ESCAPE = b'\x1b'
 past_time = time()
 dt, acc_time, n_frames, total_time = 0, 0, 0, 0
 car = Car()
-curve = Curve(Point(-20, -10), Point(0, 10), Point(20,-10))
+map = Map()
+# curve = Curve(Point(-20, -10), Point(0, 10), Point(20,-10))
 
 
 def display() -> None:
     """
     Draw objects at window
     """
-    global car, curve
+    global car, map
 
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
-    curve.draw()
+    map.draw_curves()
 
-    car.move(dt)
-    car.direction()
+    curve_ended = car.move(dt)
 
-    glPushMatrix()
-    glTranslatef(car.position.x, car.position.y, 0)
-    glRotatef(car.rotation, 0, 0, 1)
-    car.draw()
-    glPopMatrix()
+    if curve_ended:
+        if car.forward:
+            new_curve, forward = map.get_next(car.curve.id, car.curve.p2)
+            print(new_curve, forward)
+            car.set_curve(new_curve, forward)
+        else:
+            new_curve, forward = map.get_next(car.curve.id, car.curve.p0)
+            print(new_curve, forward)
+            car.set_curve(new_curve, forward)
+    else:
+        car.direction()
+        glPushMatrix()
+        glTranslatef(car.position.x, car.position.y, 0)
+        glRotatef(car.rotation, 0, 0, 1)
+        car.draw()
+        glPopMatrix()
 
     glutSwapBuffers()
 
@@ -120,7 +130,7 @@ def reshape(w:int, h:int) -> None:
     """
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    glOrtho(-20, 20, -20, 20, 0, 1)
+    glOrtho(-7, 7, -7, 7, 0, 1)
     glViewport(0, 0, w, h)
 
 
@@ -170,6 +180,9 @@ if __name__ == '__main__':
     glutSpecialFunc(special)
     glutMouseFunc(mouse)
     glutMotionFunc(motion)
+    map.generate("config/map_control.txt")
+    map.render("config/map.txt")
     car.generate("config/car.txt")
-    car.set_curve(curve)
+    print(map.curves)
+    car.set_curve(map.curves[0], True)
     glutMainLoop()

@@ -5,6 +5,7 @@
 from math import acos
 
 # project dependencies
+from src.basic.point import Point
 from src.basic.polygon import Polygon
 from src.basic.vector import Vector
 from src.objects.curve import Curve
@@ -25,26 +26,36 @@ class Car(Polygon):
         self.position = None
         self.rotation = 0.0
         self.curve = None
-        self.velocity = 100
+        self.velocity = 20
         self.a_t = 0.0
         self.b_t = 0.0
+        self.forward = True
 
-    def set_curve(self, curve:Curve) -> None:
+    def set_curve(self, curve:Curve, forward:bool) -> None:
+        self.a_t = 0.0
+        self.b_t = 0.0
+        self.rotation = 0.0
+        self.position = None
         self.curve = curve
-        self.position = curve.p0
+        self.forward = forward
 
-    def move(self, dt:float) -> None:
+    def move(self, dt:float) -> bool:
         if dt == 0: dt = 0.000000001
-        deslocation = self.velocity * dt
-        pos = deslocation/self.curve.length()
-        self.b_t = self.a_t
-        self.a_t = self.a_t + pos
-        self.position = self.curve.bezier(self.a_t)
+        if self.a_t < 1.0:
+            velocity = self.velocity
+            if not self.forward: velocity = -1 * velocity
+            deslocation = velocity * dt
+            pos = deslocation/self.curve.length()
+            self.b_t = self.a_t
+            self.a_t = self.a_t + pos
+            self.position = self.curve.bezier(self.a_t)
+            return False
+        return True
 
-    def direction(self) -> float:
+    def direction(self) -> None:
         p1 = self.curve.bezier(self.b_t)
         p2 = self.curve.bezier(self.a_t)
-        v_dir = Vector(p2, p1)
+        v_dir = Vector(p1, p2)
         v_dir.unitary()
         v_hor = Vector()
         v_hor.horizontal()
