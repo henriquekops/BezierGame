@@ -23,6 +23,10 @@ __credits__ = "Marcio Sarroglia Pinho"
 
 class Polygon:
 
+    """
+    Polygon class
+    """
+
     def __init__(self) -> None:
         self.vertices = []
         self.pairs = []

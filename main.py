@@ -72,6 +72,9 @@ dead = False
 
 
 def init() -> None:
+    """
+    Position all objects at window (randomly)
+    """
     global enemies, mainCar, map
     enemies = []
     mainCar.set_curve(map.curves[randint(0, len(map.curves)-1)], True)
@@ -81,7 +84,11 @@ def init() -> None:
         enemy.set_curve(map.curves[randint(0, num_enemies)], choice([True, False]))
         enemies.append(enemy)
 
+
 def check_collision() -> None:
+    """
+    Check the collision between the mainCar and every enemy
+    """
     global enemies, mainCar, dead
     e: Car
     for e in enemies:
@@ -118,6 +125,9 @@ def display() -> None:
 
 
 def display_car(car: Car, r, g, b) -> None:
+    """
+    Display a car at window
+    """
     curve_ended = car.move(dt)
 
     if curve_ended:

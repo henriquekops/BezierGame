@@ -24,6 +24,7 @@ __author__ = "Henrique Kops & Gabriel Castro"
 
 
 class Curve:
+
     """
     Curve class
     """
@@ -38,9 +39,15 @@ class Curve:
         self.b = 0.0
 
     def __repr__(self) -> str:
+        """
+        String representation of this curve
+        """
         return f"id={self.id} p1=[{self.p0}] p2=[{self.p1}] p3=[{self.p2}]"
 
     def length(self) -> float:
+        """
+        Get the length of this curve
+        """
         dt = 1.0/50
         t = dt
         length = 0
@@ -55,6 +62,9 @@ class Curve:
         return length
 
     def draw(self) -> None:
+        """
+        Draw this curve
+        """
         dt = 1.0/50
         t = dt
         p1 = self.bezier(0.0)
@@ -70,10 +80,16 @@ class Curve:
         p2 = self.bezier(1.0)
 
     def bezier(self, t:float) -> Point:
+        """
+        Get the next bezier point for this curve
+        """
         mt = 1-t
         x = (pow(mt,2) * self.p0.x) + (2 * mt * t * self.p1.x) + (pow(t, 2) * self.p2.x)
         y = (pow(mt,2) * self.p0.y) + (2 * mt * t * self.p1.y) + (pow(t, 2) * self.p2.y)
         return Point(x, y)
 
     def __distance(self, p1:Point, p2:Point) -> None:
+        """
+        Get the distance between two points
+        """
         return sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2))

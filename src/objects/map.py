@@ -2,19 +2,24 @@
 #-*- coding: utf-8 -*-
 
 # built-in dependencies
+from typing import Tuple
 from random import (
     randint,
     random
 )
-from typing import Tuple
 
 # project dependencies
 from src.objects.curve import Curve
 from src.basic.polygon import Polygon
-from src.basic.point import Point
+
+__author__ = "Henrique Kops & Gabriel Castro"
 
 
 class Map(Polygon):
+
+    """
+    Map class
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -22,6 +27,9 @@ class Map(Polygon):
         self.first = True
 
     def draw_curves(self) -> None:
+        """
+        Draw all map's curves
+        """
         c: Curve
         for c in self.curves:
             if self.first:
@@ -32,9 +40,15 @@ class Map(Polygon):
         self.first = False
 
     def add_curve(self, curve:Curve) -> None:
+        """
+        Add a curve to this map
+        """
         self.curves.append(curve)
 
     def get_next(self, curve:Curve, forward:bool) -> Tuple[Curve, bool]:
+        """
+        Get the next curve for this map based on parametrized curve
+        """
         aux = []
         c:Curve
         for c in self.curves:
@@ -52,6 +66,9 @@ class Map(Polygon):
         return aux[randint(0,len(aux)-1)]
 
     def render(self, f_path) -> None:
+        """
+        Render this map
+        """
         f = open(f_path)
         id = 0
         for l in f.readlines():
